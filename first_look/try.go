@@ -179,6 +179,37 @@ func f_riter(a, b uint64, n int) uint64 {
 	return f_riter(a+b, a, n-1)
 }
 
+// Search for x in sorted slice (slice MUST be sorted)
+func algoY(table []int, x int) (bool, []int) {
+	low, high := 0, len(table)-1
+	var found []int
+	for low <= high {
+		mid := (low + high) / 2
+		if table[mid] < x {
+			low = mid + 1
+		} else if table[mid] > x {
+			high = mid - 1
+		} else {
+			for i := mid - 1; i > low; i-- {
+				if table[i] == x {
+					found = append(found, i)
+				}
+			}
+
+			found = append(found, mid)
+
+			for i := mid + 1; i < high; i++ {
+				if table[i] == x {
+					found = append(found, i)
+				}
+			}
+			return true, found
+		}
+		fmt.Print("low: ", low, ", high: ", high, ", mid: ", mid, "\n")
+	}
+	return false, found
+}
+
 func main() {
 	crescent_sequences([]int{0, 9, 3, 5, 2, 0, 8, 6})
 
@@ -207,4 +238,5 @@ func main() {
 	fmt.Println("Fibonacci con frec(7):", f_rec(7), ", chiamate ricorsive: ", counter_frec)
 	fmt.Println("Fibonacci con friter(7):", f_riter(1, 1, 7), ", chiamate ricorsive: ", counter_friter)
 
+	fmt.Println(algoY([]int{-9, -1, 0, 11, 12, 12, 14, 14, 14, 14, 29, 36, 44, 44}, 14))
 }
