@@ -5,17 +5,21 @@ import (
 )
 
 // func merge sort without slicing (TODO slicing)
-func MergeSort(A *[]int) {
+// it returns the number of recursive calls
+func MergeSort(A *[]int) int {
 	X := make([]int, len(*A))
-	mergeSort(A, 0, len(*A), X)
+	return mergeSort(A, 0, len(*A), X)
 }
 
-func mergeSort(A *[]int, i, f int, X []int) {
+func mergeSort(A *[]int, i, f int, X []int) int {
 	if f-i > 1 {
 		m := (i + f) / 2
-		mergeSort(A, i, m, X)
-		mergeSort(A, m, f, X)
+		n1 := mergeSort(A, i, m, X)
+		n2 := mergeSort(A, m, f, X)
 		merge(A, i, m, f, X)
+		return 1 + n1 + n2
+	} else {
+		return 0
 	}
 }
 
