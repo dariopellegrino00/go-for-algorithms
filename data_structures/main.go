@@ -1,12 +1,13 @@
 package main
 
 import (
+	cl "data_structures/circularList"
 	qe "data_structures/queue"
 	st "data_structures/stack"
 	"fmt"
 )
 
-func main() {
+func generalDSTest() {
 	fmt.Println("DATA STRUCTURES!!")
 
 	fmt.Println("created empty int stack")
@@ -37,5 +38,37 @@ func main() {
 
 	emptyQueue := qe.New[int]()
 	fmt.Println("an empty queue", emptyQueue)
+	fmt.Println()
+
+	fmt.Println("Circular Lists")
+	var a cl.Circularlist
+	a.Append(3)
+	fmt.Println(a)
+	a.Append(-3)
+	a.Append(0)
+	a.Append(1)
+	a.Append(2)
+	fmt.Println(a)
+	fmt.Println(a.String2())
+
+	fmt.Println("Print from zero:")
+	a.PrintFromZero()
+
+	fmt.Println()
+	fmt.Println(a)
+	fmt.Println("shift 3 (head) node forward 3 times")
+	a.F2(0)
+	p1 := a.GetPoiter(0)
+	a.Move(p1)
+	fmt.Println(a)
+	fmt.Println("shift -3 node backwards 3 times")
+	p2 := a.GetPoiter(2)
+	a.Move(p2)
+	fmt.Println(a)
+	fmt.Println("3 is still the head of the list")
+}
+
+func main() {
+	generalDSTest()
 
 }

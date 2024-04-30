@@ -30,14 +30,14 @@ func (this *Stack[T]) Push(e T) {
 
 func (this *Stack[T]) Top() T {
 	if this.IsEmpty() {
-		panic("called Top() on enpty stack")
+		panic("called Top() on empty stack")
 	}
 	return this.top.value
 }
 
 func (this *Stack[T]) Pop() T {
 	if this.IsEmpty() {
-		panic("called Pop() on enpty stack")
+		panic("called Pop() on empty stack")
 	}
 	e := this.top.value
 	this.top = this.top.next

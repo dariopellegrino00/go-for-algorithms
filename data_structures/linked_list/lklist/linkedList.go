@@ -212,3 +212,19 @@ func (this Linkedlist[T]) String() string {
 	}
 
 }
+
+func (this *Linkedlist[T]) F(k int) {
+	f(this.head, k)
+}
+
+func f[T comparable](p *listNode[T], k int) int {
+	var a int
+	if p == nil {
+		return 0
+	}
+	a = 1 + f(p.next, k)
+	if a == k {
+		fmt.Println(p.item)
+	}
+	return a
+}
