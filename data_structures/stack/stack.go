@@ -1,6 +1,9 @@
 package stack
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Stack[T comparable] struct {
 	top *element[T]
@@ -28,11 +31,14 @@ func (this *Stack[T]) Push(e T) {
 	this.top = r
 }
 
-func (this *Stack[T]) Top() T {
+func (this *Stack[T]) Top() (T, error) {
+	var t T
 	if this.IsEmpty() {
-		panic("called Top() on empty stack")
+		return t, errors.New("stack is empty")
+	} else {
+		return this.top.value, nil
 	}
-	return this.top.value
+
 }
 
 func (this *Stack[T]) Pop() T {

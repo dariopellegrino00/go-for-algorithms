@@ -4,11 +4,16 @@ import (
 	cl "data_structures/circularList"
 	qe "data_structures/queue"
 	st "data_structures/stack"
+	"errors"
 	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
+	"unicode"
 )
 
+//using all the data structures
 func generalDSTest() {
-	fmt.Println("DATA STRUCTURES!!")
 
 	fmt.Println("created empty int stack")
 	var aStack st.Stack[int] = st.New[int]() // useless assignment, only for testing
@@ -19,7 +24,8 @@ func generalDSTest() {
 	aStack.Push(122)
 	fmt.Println("pushed: 122")
 	fmt.Println("popped: ", aStack.Pop())
-	fmt.Println("stack top is", aStack.Top())
+	t, _ := aStack.Top()
+	fmt.Println("stack top is", t)
 	fmt.Println("a stack", aStack)
 	fmt.Println()
 
@@ -68,7 +74,129 @@ func generalDSTest() {
 	fmt.Println("3 is still the head of the list")
 }
 
-func main() {
-	generalDSTest()
+// stack exercise
+// we assume that the input expr is legal or well formed postfix math expression
+func postFixEvaluation(expr string) int {
+	stack := st.New[int]()
+	exprs := strings.Split(expr, " ")
+	var op1, op2, res, num int
+	for _, tk := range exprs {
+		if unicode.IsDigit(rune(tk[0])) {
+			num, _ = strconv.Atoi(tk)
+			stack.Push(num)
+		} else if tk[0] == '+' || tk[0] == '-' || tk[0] == '/' || tk[0] == '*' {
+			op1 = stack.Pop()
+			op2 = stack.Pop()
+			switch rune(tk[0]) {
+			case '+':
+				res = op2 + op1
+			case '-':
+				res = op2 - op1
+			case '*':
+				res = op2 * op1
+			case '/':
+				res = op2 / op1
+			}
+			stack.Push(res)
+		}
 
+	}
+	return stack.Pop()
+}
+
+// stack exercise
+// we assume that the input expr is legal or well formed infix math expression
+func infixEvalutation(expr string) string {
+	exprs := strings.Split(expr, " ")
+	stack := st.New[byte]()
+	resexpr := ""
+	for _, tk := range exprs {
+		if unicode.IsDigit(rune(tk[0])) {
+			resexpr += tk + " "
+		} else if tk[0] == ')' {
+			resexpr += string(stack.Pop()) + " "
+		} else if tk[0] == '+' || tk[0] == '-' || tk[0] == '/' || tk[0] == '*' {
+			stack.Push(tk[0])
+		}
+	}
+	return resexpr
+}
+
+// stack tags exercise utility
+func isOpenTag(tag string) bool {
+	match, _ := regexp.MatchString("[<][a-z]+[>]", tag)
+	return match
+}
+
+// stack tags exercise utility
+func isCloseTag(tag string) bool {
+	match, _ := regexp.MatchString("[<][\\/][a-z]+[>]", tag)
+	return match
+}
+
+//TODO finish
+func isWellFormedDocument(doc string) (bool, error) {
+	stack := st.New[string]()
+	tags := strings.Split(doc, " ")
+
+	var ptag string
+	for i, tag := range tags {
+		if isOpenTag(tag) {
+			stack.Push(tag)
+		} else {
+			if isCloseTag(tag) {
+				ptag = stack.Pop()
+				if ptag != strings.Replace(tag, "/", "", -1) {
+					return false, errors.New("error at pos " + fmt.Sprint(i))
+				}
+			} else {
+				return false, errors.New("illegal token at pos " + fmt.Sprint(i))
+			}
+		}
+	}
+	// check that there is nothing inside the stack (change stack top fun to return error )
+	_, e := stack.Top()
+	var t string
+	err := ""
+	for e == nil {
+		t = stack.Pop()
+		err += " " + t
+		_, e = stack.Top()
+	}
+
+	if len(err) > 0 {
+		return false, errors.New("these tags remained open " + err)
+	}
+
+	return true, nil
+}
+
+func main() {
+	fmt.Println("DATA STRUCTURES!!")
+	generalDSTest()
+	fmt.Println()
+
+	fmt.Println("STACK EXERCISES")
+	expr1 := "5 3 - 2 *"
+	expr2 := "2 5 3 - *"
+	expr3 := "2 5 3 - * 92 + 8 * 78 -"
+	fmt.Println("postfix math expression notation")
+	fmt.Println(expr1, " = ", postFixEvaluation(expr1))
+	fmt.Println(expr2, " = ", postFixEvaluation(expr2))
+	fmt.Println(expr3, " = ", postFixEvaluation(expr3))
+	fmt.Println()
+
+	fmt.Println("correct document tags check")
+	doc1 := "<a> <b> </b> </c>"
+	r, e := isWellFormedDocument(doc1)
+	fmt.Println(doc1, ": ", r, " ", e)
+
+	doc2 := "<a> <b> </b> <c> <d> </d>"
+	r, e = isWellFormedDocument(doc2)
+	fmt.Println(doc2, ": ", r, " ", e)
+
+	expr1 = "( ( 5 - 3 ) * 2 )"
+	fmt.Println("infix expression notation conversion to postfix")
+	fmt.Println(expr1, " = ", infixEvalutation(expr1))
+	fmt.Println()
 }
