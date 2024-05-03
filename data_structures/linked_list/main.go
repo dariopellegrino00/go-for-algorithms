@@ -93,4 +93,10 @@ func main() {
 		}
 	}
 	fmt.Println()
+	list.Append(2)
+	list.Append(12)
+	list.Append(3)
+	list.Append(-4)
+	list.Append(0)
+	fmt.Println(list)
 }

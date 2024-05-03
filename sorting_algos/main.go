@@ -21,7 +21,7 @@ func generateRandomSlice(size, max int) []int {
 	return result
 }
 
-var size int = 10000
+var size int = 100000
 var slice []int = generateRandomSlice(size, 10000)
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 	copy(slice3, slice)
 
 	time3 := time.Now().UnixMilli()
-	sorter.MergeSort(&slice3)
+	calls := sorter.MergeSort(&slice3)
 	time3 = time.Now().UnixMilli() - time3
 
 	time4 := time.Now().UnixMilli()
@@ -63,10 +63,11 @@ func main() {
 	sorter.RecursiveSelectionSort(&slice4)
 	time5 = time.Now().UnixMilli() - time5
 
-	fmt.Println("iterative selection sort time for size", size, " slice was TODO", time2, "ms")
+	fmt.Println("iterative selection sort time for size", size, " slice was ", time2, "ms")
 	fmt.Println("iterative insertion sort time for size", size, " slice was ", time1, "ms")
-	fmt.Println("recursive selection sort time for size", size, " slice was TODO", time5, "ms")
+	fmt.Println("recursive selection sort time for size", size, " slice was ", time5, "ms")
 	fmt.Println("recursive merge sort time for size ", size, " slice was ", time3, "ms")
+	fmt.Println("number of recursive calls for merge sort ", calls)
 	fmt.Println("recursive min sort time for size", size, " slice was ", time4, "ms")
 
 }
