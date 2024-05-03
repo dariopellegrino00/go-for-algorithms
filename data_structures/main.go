@@ -1,6 +1,7 @@
 package main
 
 import (
+	trees "data_structures/binaryTree"
 	cl "data_structures/circularList"
 	qe "data_structures/queue"
 	st "data_structures/stack"
@@ -134,7 +135,6 @@ func isCloseTag(tag string) bool {
 	return match
 }
 
-//TODO finish
 func isWellFormedDocument(doc string) (bool, error) {
 	stack := st.New[string]()
 	tags := strings.Split(doc, " ")
@@ -171,12 +171,7 @@ func isWellFormedDocument(doc string) (bool, error) {
 	return true, nil
 }
 
-func main() {
-	fmt.Println("DATA STRUCTURES!!")
-	generalDSTest()
-	fmt.Println()
-
-	fmt.Println("STACK EXERCISES")
+func stackPlay() {
 	expr1 := "5 3 - 2 *"
 	expr2 := "2 5 3 - *"
 	expr3 := "2 5 3 - * 92 + 8 * 78 -"
@@ -198,5 +193,51 @@ func main() {
 	expr1 = "( ( 5 - 3 ) * 2 )"
 	fmt.Println("infix expression notation conversion to postfix")
 	fmt.Println(expr1, " = ", infixEvalutation(expr1))
+}
+
+func binTreePlay() {
+	rootNode := trees.NewNode(78,
+		trees.NewNode(54,
+			nil,
+			trees.NewNode(90,
+				trees.NewNode(19,
+					nil,
+					nil),
+				trees.NewNode(95,
+					nil,
+					nil))),
+		trees.NewNode(21,
+			trees.NewNode(16,
+				trees.NewNode(5,
+					nil,
+					nil),
+				nil),
+			trees.NewNode(19,
+				trees.NewNode(56,
+					nil,
+					nil),
+				trees.NewNode(43,
+					nil,
+					nil))))
+	tree := trees.NewTree(rootNode)
+
+	fmt.Println(tree)
+	fmt.Println("preorder   visit: ", tree.PreOrderVisit())
+	fmt.Println("inorder    visit: ", tree.InOrderVisit())
+	fmt.Println("postorder  visit: ", tree.PostOrderVisit())
+}
+
+func main() {
+	fmt.Println("DATA STRUCTURES")
+	generalDSTest()
 	fmt.Println()
+
+	fmt.Println("STACK EXERCISES")
+	stackPlay()
+	fmt.Println()
+
+	fmt.Println("BINARY TREES")
+	binTreePlay()
+	fmt.Println()
+
 }
