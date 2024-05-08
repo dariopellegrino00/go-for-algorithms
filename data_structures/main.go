@@ -225,6 +225,13 @@ func binTreePlay() {
 	fmt.Println("preorder   visit: ", tree.PreOrderVisit())
 	fmt.Println("inorder    visit: ", tree.InOrderVisit())
 	fmt.Println("postorder  visit: ", tree.PostOrderVisit())
+
+	slice := []int{1, 3, 2, 13, 5, 98, 12, 34}
+	fmt.Println()
+	fmt.Println(slice)
+	fmt.Println()
+	treeFromSlice := trees.ArrayToTree(slice)
+	fmt.Println(treeFromSlice)
 }
 
 func main() {

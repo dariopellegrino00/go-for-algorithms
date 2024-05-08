@@ -86,3 +86,21 @@ func (node *treeNode[T]) postOrderVisit(nodes *[]T) *[]T {
 	}
 	return nodes
 }
+
+//
+func ArrayToTree[T comparable](slice []T) *BinaryTree[T] {
+	var tree BinaryTree[T]
+	tree.root = arrayToTree(slice, 0)
+	return &tree
+}
+
+func arrayToTree[T comparable](slice []T, i int) *treeNode[T] {
+	if i >= len(slice) {
+		return nil
+	}
+
+	root := NewNode(slice[i], nil, nil)
+	root.left = arrayToTree(slice, i*2+1)
+	root.right = arrayToTree(slice, i*2+2)
+	return root
+}
